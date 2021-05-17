@@ -20,8 +20,7 @@ Board::CityDetails::CityDetails(std::string color, std::string city, std::array<
     for(auto const& link:linked){
         if(link ==City::Empty){break;}
         Adjecent.emplace(link,true);
-    }    
-   
+    }       
     
     InfectionRate =0;
     ResearchFacility = false;
@@ -32,6 +31,7 @@ Board::Board(){
     string thisCity;
     string LinkedCity;
     string DiseaseColor;
+    Cure.insert({{Color::Black,false},{Color::Blue,false},{Color::Red,false},{Color::Yellow,false}});
     while(getline(file,Line)){
         istringstream readstream{Line};
         readstream >> thisCity;
@@ -100,7 +100,7 @@ enum Color pandemic::StringToColor(string &color){
 
 
 }
-enum City pandemic::StringToCity(string &city){
+enum City pandemic::StringToCity(string city){
     
 
     if(city=="Algiers"){
@@ -421,8 +421,15 @@ string Board::CityToString(enum City city){
 void Board::Pr(){
     for (auto const& map : WorldMap)
     {
-        cout<< CityToString(map.first) << " : "<< map.second.ResearchFacility << endl;
+        cout<<CityToString(map.first)<<":"<<endl;
+        cout<<"Connected Cities:"<<endl;
+        for (auto const & it:map.second.Adjecent)
+        {
+            cout<<CityToString(it.first)<<endl;
+        }
+        cout<< endl;
     }
+    
     
 }
 

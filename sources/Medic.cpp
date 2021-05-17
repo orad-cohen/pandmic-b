@@ -13,14 +13,17 @@ Player& Medic::treat(enum City city){
     treatHelper(city,true);
     return *this;
 }
-Player& Medic::drive(enum City city){
-    
+Player& Medic::drive(enum City city){   
     if(isConnected(thisCity,city)){
         thisCity=city;
+        if(Cure().at(WorldMap().at(city).Disease)&&WorldMap().at(city).InfectionRate!=0){
+            treatHelper(city,true);
+        }
     }
-    if(Cure().at(WorldMap().at(city).Disease)&&WorldMap().at(city).InfectionRate!=0){
-        treatHelper(city,true);
+    else{
+        throw invalid_argument("City isn't connected");
     }
+    
     return *this;
 }
 

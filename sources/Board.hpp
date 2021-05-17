@@ -12,7 +12,7 @@ using namespace pandemic;
 
 namespace pandemic{
     enum Color StringToColor(std::string &color);
-    enum City StringToCity(string &city);
+    enum City StringToCity(string city);
 
 class Board  {
     const static size_t _MaxConnections = 6;
@@ -47,7 +47,7 @@ class Board  {
     void Pr();
 
     static string ColorToString(enum Color color);
-    static string CityToString(enum City);
+    static string CityToString(enum City );
 
     friend class Player;
 
