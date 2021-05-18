@@ -14,8 +14,8 @@ using namespace pandemic;
 
 Board::CityDetails::CityDetails(std::string color, std::string city, std::array<enum City,_MaxConnections> linked){
     
-    Disease = StringToColor(color);
-    thisCity = StringToCity(city);
+    Disease = enumToColor(color);
+    thisCity = enumToCity(city);
     
     for(auto const& link:linked){
         if(link ==City::Empty){break;}
@@ -42,14 +42,14 @@ Board::Board(){
         
         while(!readstream.eof()){
             readstream >> LinkedCity;            
-            connected.at(i)= StringToCity(LinkedCity);
+            connected.at(i)= enumToCity(LinkedCity);
             i++;
         }
         
        
 
         CityDetails _city{DiseaseColor,thisCity,connected};
-        WorldMap.emplace(StringToCity(thisCity),_city);
+        WorldMap.emplace(enumToCity(thisCity),_city);
     }
     
     
@@ -80,11 +80,32 @@ bool Board::is_clean(){
      return ans;
 }
 ostream& pandemic::operator<<(ostream& os , Board& board){
- return os;
+    string ans = "##### Discovred cures #####";
+
+    for(auto const& color : board.Cure){
+        if(color.second){
+            ans+=Board::colorEnumToString(color.first)+"\n";
+        }
+        
+    }
+    ans+="\n";
+      for (auto const& map : board.WorldMap)
+    {
+        ans+="#####"+Board::cityEnumToString(map.first)+"#####\n";
+        ans+="Infection level: "+to_string(map.second.InfectionRate)+" "+Board::colorEnumToString(map.second.Disease)+" "+"cubes\n";
+       
+        if(map.second.ResearchFacility){
+            ans+="Research center constructed\n";
+        }
+
+        ans+='\n';
+    }
+    
+ return os<<ans;
 }
 
 
-enum Color pandemic::StringToColor(string &color){
+enum Color Board::enumToColor(string & color){
     if(color=="Yellow"){
         return Color::Yellow;
     }
@@ -100,7 +121,7 @@ enum Color pandemic::StringToColor(string &color){
 
 
 }
-enum City pandemic::StringToCity(string city){
+enum City Board::enumToCity(string& city){
     
 
     if(city=="Algiers"){
@@ -249,7 +270,7 @@ enum City pandemic::StringToCity(string city){
    
 
 }
-string Board::ColorToString(enum Color color){
+string Board::colorEnumToString(enum Color color){
      if(color==Color::Yellow){
         return "Yellow";
     }
@@ -267,7 +288,7 @@ string Board::ColorToString(enum Color color){
 
 
 }
-string Board::CityToString(enum City city){
+string Board::cityEnumToString(enum City city){
     
 
     if(city==City::Algiers){
@@ -417,20 +438,6 @@ string Board::CityToString(enum City city){
     
     
 
-}
-void Board::Pr(){
-    for (auto const& map : WorldMap)
-    {
-        cout<<CityToString(map.first)<<":"<<endl;
-        cout<<"Connected Cities:"<<endl;
-        for (auto const & it:map.second.Adjecent)
-        {
-            cout<<CityToString(it.first)<<endl;
-        }
-        cout<< endl;
-    }
-    
-    
 }
 
 

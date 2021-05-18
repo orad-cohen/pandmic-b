@@ -89,7 +89,7 @@ void Player::discover_helper(Color color, bool isGeneSplicer,bool isResercher, i
     size_t GuardCount=0;
     if(!isResercher){
         if(!_Board->WorldMap.at(thisCity).ResearchFacility){
-            throw invalid_argument("no research facility "+Board::CityToString(thisCity));
+            throw invalid_argument("no research facility "+Board::cityEnumToString(thisCity));
     }
     }
     
